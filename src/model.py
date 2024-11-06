@@ -1,5 +1,5 @@
 from sklearn.linear_model import ElasticNet
-from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.metrics import mean_absolute_error, root_mean_squared_error, r2_score
 import matplotlib.pyplot as plt
 
 from preprocessing import preprocess_data
@@ -11,9 +11,11 @@ def train_model(stock_data):
     model.fit(x_train, y_train)
 
     y_pred = model.predict(x_test)
-    mse = mean_squared_error(y_test, y_pred)
+    mae = mean_absolute_error(y_test, y_pred)
+    rmse = root_mean_squared_error(y_test, y_pred)
     r2 = r2_score(y_test, y_pred)
-    print(f"Mean Squared Error: {mse}")
+    print(f"Mean Absolute Error: {mae}")
+    print(f"Root Mean Squared Error: {rmse}")
     print(f"R-squared: {r2}")
 
     plt.figure(figsize=(14,7))
