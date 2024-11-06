@@ -1,6 +1,7 @@
 from sklearn.linear_model import ElasticNet
 from sklearn.metrics import mean_absolute_error, root_mean_squared_error, r2_score
 import matplotlib.pyplot as plt
+import numpy as np
 
 from preprocessing import preprocess_data
 
@@ -19,8 +20,16 @@ def train_model(stock_data):
     print(f"R-squared: {r2}")
 
     plt.figure(figsize=(14,7))
-    plt.plot(y_test.index.sort_values(), y_test, label="Actual Price", color="blue")
-    plt.plot(y_test.index.sort_values(), y_pred, label="Predicted Price", color="red")
+    
+    # plt.plot(y_test.index.sort_values(), y_test, label="Actual Price", color="blue")
+    # plt.plot(y_test.index.sort_values(), y_pred, label="Predicted Price", color="red")
+    
+    plt.scatter(x_test[:,0], y_pred, label="Predicted Price", color="green")
+    z = np.polyfit(x_test[:, 0], y_test, 3)
+    p = np.poly1d(z.ravel())
+    xp = np.linspace(x_test[:, 0].min(), x_test[:, 0].max(), 100)
+    plt.plot(xp, p(xp), label="Regression Line", color="blue")
+    
     plt.legend()
     plt.xlabel("Data")
     plt.ylabel("Stock Price")
