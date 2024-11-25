@@ -18,15 +18,16 @@ def preprocess_data(stock_data, test_size=0.2, random_state=42):
     stock_data['EMA_20'] = stock_data['Close'].ewm(span=20, adjust=False).mean()
     stock_data['MACD'] = stock_data['Close'].ewm(span=20, adjust=False).mean() - stock_data['Close'].ewm(span=26, adjust=False).mean()
     stock_data['RSI'] = compute_RSI(stock_data['Close'], window=14)
+    stock_data['BB_Upper'] = stock_data['Close'].rolling(window=20).mean() + (stock_data['Close'].rolling(window=20).std() * 2)
+    stock_data['BB_Lower'] = stock_data['Close'].rolling(window=20).mean() - (stock_data['Close'].rolling(window=20).std() * 2)
 
     features = ['Open', 'High', 'Low', 'Volume', 'SMA_20', 'SMA_50', 'EMA_20', 'MACD', 'RSI']
     x = stock_data[features]
     y = stock_data['Close']
 
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size, random_state=random_state)
-
     imputer = KNNImputer(n_neighbors=5)
-    x_train = imputer.fit_transform(x_train)
-    x_test = imputer.transform(x_test)
+    x = imputer.fit_transform(x)
+    
+    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=test_size, random_state=random_state)
 
     return x_train, x_test, y_train, y_test
