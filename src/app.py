@@ -1,7 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import pandas as pd
 from fetch_data import fetch_stock_data
-from preprocessing import preprocess_data
 from model import train_model
 from recommendation import generate_recommendation
 
@@ -10,7 +9,7 @@ stocks = pd.read_csv(stock_file)['Symbol'].tolist()
 
 for stock in stocks:
     print(f"\nProcessing Stock: {stock}")
-    stock_data = fetch_stock_data(stock, start_date="2010-01-01", end_date=datetime.now().strftime('%Y-%m-%d'))
+    stock_data = fetch_stock_data(stock, start_date=(datetime.now()-timedelta(10*365)).strftime('%Y-%m-%d'), end_date=datetime.now().strftime('%Y-%m-%d'))
 
     model = train_model(stock_data)
 
