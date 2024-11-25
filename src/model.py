@@ -21,14 +21,19 @@ def train_model(stock_data):
 
     plt.figure(figsize=(14,7))
     
-    # plt.plot(y_test.index.sort_values(), y_test, label="Actual Price", color="blue")
-    # plt.plot(y_test.index.sort_values(), y_pred, label="Predicted Price", color="red")
+    # Plot actual price of stocks
+    plt.scatter(x_test[:,0], y_test, label="Actual Price", color="blue", alpha=0.6)
     
-    plt.scatter(x_test[:,0], y_pred, label="Predicted Price", color="green")
-    z = np.polyfit(x_test[:, 0], y_test, 3)
+    # Plot predicted price
+    plt.scatter(x_test[:,0], y_pred, label="Predicted Price", color="red", alpha=0.6)
+
+    # Coefficent of 1-D polynomial of best fit, z = [x, y] y = mx + c
+    z = np.polyfit(x_test[:, 0], y_test, 1)
+    # Polynomial function, p(x) = mx + c
     p = np.poly1d(z.ravel())
-    xp = np.linspace(x_test[:, 0].min(), x_test[:, 0].max(), 100)
-    plt.plot(xp, p(xp), label="Regression Line", color="blue")
+    # Defines a range of x values for which the regression line is plotted
+    xp = np.linspace(x_test[:, 0].min(), x_test[:, 0].max(), len(x_test[:, 0]))
+    plt.plot(xp, p(xp), label="Regression Line", color="green", linewidth=2)
     
     plt.legend()
     plt.xlabel("Data")
