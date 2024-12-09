@@ -11,9 +11,9 @@ for stock in stocks:
     print(f"\nProcessing Stock: {stock}")
     stock_data = fetch_stock_data(stock, start_date=(datetime.now()-timedelta(10*365)).strftime('%Y-%m-%d'), end_date=datetime.now().strftime('%Y-%m-%d'))
 
-    model = train_model(stock_data)
+    model = train_model(stock_data, stock)
 
-    latest_data = stock_data.iloc[-1:][['Open', 'High', 'Low', 'Volume', 'SMA_20', 'SMA_50', 'EMA_20', 'MACD', 'RSI']].values.reshape(1, -1)
+    latest_data = stock_data.iloc[-1:][['Open', 'High', 'Low', 'Volume', 'SMA_20', 'SMA_50', 'EMA_20', 'EMA_50', 'MACD', 'RSI', 'BB_Upper', 'BB_Lower']].values.reshape(1, -1)
     predicted_price = model.predict(latest_data)[0]
     current_price = stock_data['Close'].iloc[-1]
 

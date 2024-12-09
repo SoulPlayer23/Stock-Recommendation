@@ -16,12 +16,13 @@ def preprocess_data(stock_data, test_size=0.2, random_state=42):
     stock_data['SMA_20'] = stock_data['Close'].rolling(window=20).mean()
     stock_data['SMA_50'] = stock_data['Close'].rolling(window=50).mean()
     stock_data['EMA_20'] = stock_data['Close'].ewm(span=20, adjust=False).mean()
+    stock_data['EMA_50'] = stock_data['Close'].ewm(span=50, adjust=False).mean()
     stock_data['MACD'] = stock_data['Close'].ewm(span=20, adjust=False).mean() - stock_data['Close'].ewm(span=26, adjust=False).mean()
     stock_data['RSI'] = compute_RSI(stock_data['Close'], window=14)
     stock_data['BB_Upper'] = stock_data['Close'].rolling(window=20).mean() + (stock_data['Close'].rolling(window=20).std() * 2)
     stock_data['BB_Lower'] = stock_data['Close'].rolling(window=20).mean() - (stock_data['Close'].rolling(window=20).std() * 2)
 
-    features = ['Open', 'High', 'Low', 'Volume', 'SMA_20', 'SMA_50', 'EMA_20', 'MACD', 'RSI']
+    features = ['Open', 'High', 'Low', 'Volume', 'SMA_20', 'SMA_50', 'EMA_20', 'EMA_50', 'MACD', 'RSI', 'BB_Upper', 'BB_Lower']
     x = stock_data[features]
     y = stock_data['Close']
 
