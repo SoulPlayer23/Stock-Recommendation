@@ -41,7 +41,7 @@ def plot_predictions(stock_data, model, stock_symbol):
 def train_model(stock_data, stock_symbol):
     x_train, x_test, y_train, y_test = preprocess_data(stock_data, test_size=0.2, random_state=42)
 
-    model = ElasticNet(alpha=0.1, l1_ratio=0.5, max_iter=100000)
+    model = ElasticNet(alpha=0.02, l1_ratio=0.5, max_iter=1000000)
     model.fit(x_train, y_train)
 
     y_pred = model.predict(x_test)
